@@ -8,6 +8,10 @@ RM := rm -rf
 
 # All of the sources participating in the build are defined here
 -include sources.mk
+-include USB_DEVICE/Target/subdir.mk
+-include USB_DEVICE/App/subdir.mk
+-include Middlewares/ST/STM32_USB_Device_Library/Core/Src/subdir.mk
+-include Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/subdir.mk
 -include Drivers/STM32F1xx_HAL_Driver/Src/subdir.mk
 -include Core/Startup/subdir.mk
 -include Core/Src/subdir.mk
@@ -54,8 +58,8 @@ all: main-build
 main-build: DMX.elf secondary-outputs
 
 # Tool invocations
-DMX.elf: $(OBJS) $(USER_OBJS) /Users/el314/Disk-O/the.only@mail.ru-mailru/Programming/STM32CubeIDE/workspace_1.5.1/DMX/STM32F103R8TX_FLASH.ld
-	arm-none-eabi-gcc -o "DMX.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"/Users/el314/Disk-O/the.only@mail.ru-mailru/Programming/STM32CubeIDE/workspace_1.5.1/DMX/STM32F103R8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="DMX.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+DMX.elf: $(OBJS) $(USER_OBJS) /Users/el314/Disk-O/mail.ru-348330048-4/Programming/DMX8X8A-v1_firmwareV0/STM32F103R8TX_FLASH.ld
+	arm-none-eabi-gcc -o "DMX.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"/Users/el314/Disk-O/mail.ru-348330048-4/Programming/DMX8X8A-v1_firmwareV0/STM32F103R8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="DMX.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

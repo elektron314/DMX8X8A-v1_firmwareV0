@@ -19,6 +19,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "usb_device.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -49,8 +50,6 @@ TIM_HandleTypeDef htim3;
 
 UART_HandleTypeDef huart1;
 
-PCD_HandleTypeDef hpcd_USB_FS;
-
 /* USER CODE BEGIN PV */
 
 /* USER CODE END PV */
@@ -64,7 +63,6 @@ static void MX_TIM1_Init(void);
 static void MX_TIM2_Init(void);
 static void MX_TIM3_Init(void);
 static void MX_USART1_UART_Init(void);
-static void MX_USB_PCD_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -114,7 +112,7 @@ int main(void)
   MX_TIM2_Init();
   MX_TIM3_Init();
   MX_USART1_UART_Init();
-  MX_USB_PCD_Init();
+  MX_USB_DEVICE_Init();
   /* USER CODE BEGIN 2 */
 
   HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
@@ -138,13 +136,13 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 
-	  HAL_GPIO_WritePin(uLED1_GPIO_Port, uLED1_Pin, GPIO_PIN_RESET);
-	  HAL_GPIO_WritePin(uLED2_GPIO_Port, uLED2_Pin, GPIO_PIN_RESET);
+	  HAL_GPIO_WritePin(uLED1_GPIO_Port, uLED1_Pin, GPIO_PIN_SET);
+	  HAL_GPIO_WritePin(uLED2_GPIO_Port, uLED2_Pin, GPIO_PIN_SET);
 	  HAL_GPIO_WritePin(uLED3_GPIO_Port, uLED3_Pin, GPIO_PIN_RESET);
 	  HAL_GPIO_WritePin(uLED4_GPIO_Port, uLED4_Pin, GPIO_PIN_RESET);
 	  HAL_Delay(500);
-	  HAL_GPIO_WritePin(uLED1_GPIO_Port, uLED1_Pin, GPIO_PIN_SET);
-	  HAL_GPIO_WritePin(uLED2_GPIO_Port, uLED2_Pin, GPIO_PIN_SET);
+	  HAL_GPIO_WritePin(uLED1_GPIO_Port, uLED1_Pin, GPIO_PIN_RESET);
+	  HAL_GPIO_WritePin(uLED2_GPIO_Port, uLED2_Pin, GPIO_PIN_RESET);
 	  HAL_GPIO_WritePin(uLED3_GPIO_Port, uLED3_Pin, GPIO_PIN_SET);
 	  HAL_GPIO_WritePin(uLED4_GPIO_Port, uLED4_Pin, GPIO_PIN_SET);
 	  HAL_Delay(500);
@@ -532,37 +530,6 @@ static void MX_USART1_UART_Init(void)
   /* USER CODE BEGIN USART1_Init 2 */
 
   /* USER CODE END USART1_Init 2 */
-
-}
-
-/**
-  * @brief USB Initialization Function
-  * @param None
-  * @retval None
-  */
-static void MX_USB_PCD_Init(void)
-{
-
-  /* USER CODE BEGIN USB_Init 0 */
-
-  /* USER CODE END USB_Init 0 */
-
-  /* USER CODE BEGIN USB_Init 1 */
-
-  /* USER CODE END USB_Init 1 */
-  hpcd_USB_FS.Instance = USB;
-  hpcd_USB_FS.Init.dev_endpoints = 8;
-  hpcd_USB_FS.Init.speed = PCD_SPEED_FULL;
-  hpcd_USB_FS.Init.low_power_enable = DISABLE;
-  hpcd_USB_FS.Init.lpm_enable = DISABLE;
-  hpcd_USB_FS.Init.battery_charging_enable = DISABLE;
-  if (HAL_PCD_Init(&hpcd_USB_FS) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /* USER CODE BEGIN USB_Init 2 */
-
-  /* USER CODE END USB_Init 2 */
 
 }
 
