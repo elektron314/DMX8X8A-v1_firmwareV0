@@ -24,6 +24,8 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
+#include "core.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -51,10 +53,6 @@ TIM_HandleTypeDef htim3;
 UART_HandleTypeDef huart1;
 
 /* USER CODE BEGIN PV */
-
-uint8_t duty = 0;
-
-uint8_t extern Rotary();
 
 /* USER CODE END PV */
 
@@ -119,14 +117,8 @@ int main(void)
   MX_USB_DEVICE_Init();
   /* USER CODE BEGIN 2 */
 
-  HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
-  HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2);
-  HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_3);
-  HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_4);
-  HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
-  HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);
-  HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_3);
-  HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_4);
+  if (!core_init())
+    Error_Handler();
 
   /* USER CODE END 2 */
 
@@ -138,20 +130,7 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 
-	  HAL_GPIO_WritePin(uLED1_GPIO_Port, uLED1_Pin, GPIO_PIN_SET);
-	  HAL_GPIO_WritePin(uLED2_GPIO_Port, uLED2_Pin, GPIO_PIN_SET);
-	  HAL_GPIO_WritePin(uLED3_GPIO_Port, uLED3_Pin, GPIO_PIN_RESET);
-	  HAL_GPIO_WritePin(uLED4_GPIO_Port, uLED4_Pin, GPIO_PIN_RESET);
-	  HAL_Delay(500);
-	  HAL_GPIO_WritePin(uLED1_GPIO_Port, uLED1_Pin, GPIO_PIN_RESET);
-	  HAL_GPIO_WritePin(uLED2_GPIO_Port, uLED2_Pin, GPIO_PIN_RESET);
-	  HAL_GPIO_WritePin(uLED3_GPIO_Port, uLED3_Pin, GPIO_PIN_SET);
-	  HAL_GPIO_WritePin(uLED4_GPIO_Port, uLED4_Pin, GPIO_PIN_SET);
-	  HAL_Delay(500);
-
-	  duty = Rotary(1)*10+Rotary(2);
-	  htim2.Instance->CCR1 = duty;
-	  htim3.Instance->CCR1 = duty;
+	  core_process();
 
   }
   /* USER CODE END 3 */
@@ -542,13 +521,10 @@ static void MX_GPIO_Init(void)
   GPIO_InitTypeDef GPIO_InitStruct = {0};
 
   /* GPIO Ports Clock Enable */
-  __HAL_RCC_GPIOC_CLK_ENABLE();
   __HAL_RCC_GPIOD_CLK_ENABLE();
+  __HAL_RCC_GPIOC_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
-
-  /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(uLED4_GPIO_Port, uLED4_Pin, GPIO_PIN_SET);
@@ -556,19 +532,19 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOC, uLED3_Pin|uLED2_Pin|uLED1_Pin, GPIO_PIN_SET);
 
-  /*Configure GPIO pins : PC13 uLED3_Pin uLED2_Pin uLED1_Pin */
-  GPIO_InitStruct.Pin = GPIO_PIN_13|uLED3_Pin|uLED2_Pin|uLED1_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
-
   /*Configure GPIO pin : uLED4_Pin */
   GPIO_InitStruct.Pin = uLED4_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(uLED4_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : uLED3_Pin uLED2_Pin uLED1_Pin */
+  GPIO_InitStruct.Pin = uLED3_Pin|uLED2_Pin|uLED1_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
   /*Configure GPIO pin : S3_3_Pin */
   GPIO_InitStruct.Pin = S3_3_Pin;

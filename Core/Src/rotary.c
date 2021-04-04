@@ -1,6 +1,6 @@
 #include "main.h"
 
-uint8_t Rotary(uint8_t S)
+uint8_t rotary(uint8_t S)
 {
 	uint8_t In1, In2, In3, In4;
 

@@ -68,6 +68,8 @@ void Error_Handler(void);
 #define ADC_A2_GPIO_Port GPIOC
 #define ADC_B2_Pin GPIO_PIN_3
 #define ADC_B2_GPIO_Port GPIOC
+#define PWM_A1_Pin GPIO_PIN_0
+#define PWM_A1_GPIO_Port GPIOA
 #define PWM_B1_Pin GPIO_PIN_1
 #define PWM_B1_GPIO_Port GPIOA
 #define PWM_A2_Pin GPIO_PIN_2
@@ -90,6 +92,8 @@ void Error_Handler(void);
 #define PWM_B4_GPIO_Port GPIOB
 #define PWM_A4_Pin GPIO_PIN_1
 #define PWM_A4_GPIO_Port GPIOB
+#define PB14_TIMER_Pin GPIO_PIN_14
+#define PB14_TIMER_GPIO_Port GPIOB
 #define uLED4_Pin GPIO_PIN_15
 #define uLED4_GPIO_Port GPIOB
 #define uLED3_Pin GPIO_PIN_6
@@ -98,6 +102,8 @@ void Error_Handler(void);
 #define uLED2_GPIO_Port GPIOC
 #define uLED1_Pin GPIO_PIN_8
 #define uLED1_GPIO_Port GPIOC
+#define PA8_TIMER_Pin GPIO_PIN_8
+#define PA8_TIMER_GPIO_Port GPIOA
 #define S3_3_Pin GPIO_PIN_15
 #define S3_3_GPIO_Port GPIOA
 #define S3_1_Pin GPIO_PIN_10
